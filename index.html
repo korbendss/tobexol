@@ -10,60 +10,44 @@
       margin: 0;
       padding: 0;
       height: 100%;
+      background: linear-gradient(to bottom, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
       font-family: system-ui, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(to bottom, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* добавляем шум */
-    html::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGJ89+7dfwAIFwMDAANUAgKhNSGuAAAAAElFTkSuQmCC');
-      opacity: 0.05;
-      z-index: 1;
     }
 
     .container {
-      position: relative;
-      z-index: 2;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      border-radius: 2rem;
-      padding: 1rem 2rem;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      background: white;
+      border-radius: 9999px;
+      padding: 0.6rem 1.4rem;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: transform 0.2s ease;
     }
 
     .container:hover {
-      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
     }
 
     .icon {
-      font-size: 1.6rem;
+      background: black;
       color: white;
-    }
-
-    /* убираем текст, оставляем иконку */
-    .text {
-      display: none;
+      border-radius: 50%;
+      padding: 0.5rem;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 </head>
 <body>
   <div class="container" id="realButton">
     <div class="icon">📷</div>
-    <div class="text">JUST COOL CARS</div>
   </div>
 
   <script>
@@ -78,7 +62,6 @@
     })();
 
     let interacted = false;
-    document.addEventListener("mousemove", () => interacted = true);
     document.addEventListener("touchstart", () => interacted = true);
     document.addEventListener("keypress", () => interacted = true);
 
