@@ -12,49 +12,42 @@
     body {
       margin: 0;
       padding: 0;
-      background-color: #000;
-      color: #fff;
+      height: 100vh;
+      background: linear-gradient(to bottom, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
       font-family: system-ui, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
     }
 
     .container {
-      max-width: 90%;
-      width: 100%;
-      background-color: #111;
+      width: 90%;
+      max-width: 400px;
       padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
       text-align: center;
     }
 
     .btn {
-      background-color: #222;
-      color: #fff;
+      background-color: #fff;
+      color: #000;
       border: none;
-      border-radius: 12px;
-      padding: 1rem 2rem;
-      font-size: 2rem;
-      cursor: pointer;
+      border-radius: 9999px;
+      padding: 1.2rem 2rem;
+      font-size: 2.5rem;
       width: 100%;
-      transition: background-color 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease;
     }
 
     .btn:hover {
-      background-color: #333;
+      transform: scale(1.05);
     }
 
     @media (max-width: 480px) {
       .btn {
-        font-size: 1.5rem;
-        padding: 0.8rem 1.2rem;
-      }
-
-      .container {
-        padding: 1.5rem;
+        font-size: 2rem;
+        padding: 1rem 1.5rem;
       }
     }
   </style>
