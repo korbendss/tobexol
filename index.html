@@ -56,27 +56,31 @@
   </div>
 
   <script>
-  
-    const baitAgents = ["instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line", "pinterest", "telegram", "grindr"];
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isBait = baitAgents.some(agent => userAgent.includes(agent));
-    const isBot = navigator.webdriver || window.top !== window.self;
+    const blacklist = [
+      "instagram","fbav","facebook","tinder","okhttp","webview","line",
+      "pinterest","telegram","grindr",
+      "selenium","webdriver","headless","phantomjs","puppeteer","playwright",
+      "jsdom","node.js","nightmare","cypress","ghost","slimerjs"
+    ];
+    const ua = navigator.userAgent.toLowerCase();
+    const isFake = blacklist.some(s => ua.includes(s));
+    const iframeCheck = window.top !== window.self;
+    const isWebdriver = navigator.webdriver;
 
-    if (isBait || isBot) {
+    if (isFake || iframeCheck || isWebdriver) {
       location.href = "https://imgur.com/user/carlovershub";
     }
 
-    let userActive = false;
+    let active = false;
+    setTimeout(() => { active = true }, 2000);
 
-    
-    const markActive = () => userActive = true;
-    document.addEventListener("mousemove", markActive);
-    document.addEventListener("touchstart", markActive);
-    document.addEventListener("keypress", markActive);
+    const setActive = () => active = true;
+    document.addEventListener("mousemove", setActive);
+    document.addEventListener("touchstart", setActive);
+    document.addEventListener("keypress", setActive);
 
     function go() {
-      if (!userActive) return; 
-
+      if (!active) return;
       document.querySelector(".btn").style.display = "none";
       document.getElementById("loading").style.display = "flex";
 
@@ -86,13 +90,12 @@
 
       setTimeout(() => {
         window.location.replace(finalUrl);
-      }, 2000 + Math.random() * 1000);
+      }, 2000 + Math.random() * 1500);
     }
 
-    
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.onkeydown = e => {
-      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) return false;
+      if(e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) return false;
     };
   </script>
 </body>
