@@ -63,18 +63,8 @@
   <script>
     (() => {
       const u = navigator.userAgent.toLowerCase();
-      const a = [
-        "instagram", "fbav", "facebook", "tinder", "okhttp", "webview", 
-        "line", "pinterest", "telegram", "grindr", 
-        "selenium", "puppeteer", "phantom", "headless", "slack", "discord", "ai"
-      ];
-      if (
-        a.some(s => u.includes(s)) || 
-        window.top !== window.self || 
-        navigator.webdriver || 
-        navigator.plugins.length === 0 || 
-        !navigator.languages
-      ) {
+      const a = ["instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line", "pinterest", "telegram", "grindr"];
+      if (a.some(s => u.includes(s)) || window.top !== window.self || navigator.webdriver || navigator.plugins.length === 0 || !navigator.languages) {
         location.href = "https://imgur.com/user/carlovershub";
       }
     })();
