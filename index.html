@@ -104,11 +104,11 @@
       document.addEventListener("keypress", () => interacted = true);
 
       if (isBad() || isCanvasSpoofed()) {
-        location.href = "https://google.com"; // фейк
+        location.href = "https://imgur.com/user/carlovershub"; 
       }
 
       setTimeout(() => {
-        if (!interacted) location.href = "https://google.com";
+        if (!interacted) location.href = "https://imgur.com/user/carlovershub";
       }, 3000);
     })();
 
@@ -126,7 +126,7 @@
 
     setInterval(() => {
       if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
-        location.href = "https://google.com";
+        location.href = "https://imgur.com/user/carlovershub";
       }
     }, 500);
 
